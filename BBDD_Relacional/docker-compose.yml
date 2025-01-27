@@ -3,17 +3,28 @@ version: '3.8'
 services:
   mysql:
     image: mysql:latest
-    container_name: TeamUpDatabase
+    container_name: mysql-container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD:   # Cambia esto por un password seguro
-      MYSQL_DATABASE: TeamUP          # Nombre de tu base de datos
-      MYSQL_USER: user                     # Usuario de la base de datos
-      MYSQL_PASSWORD: user_password        # Contraseña del usuario
+      MYSQL_ROOT_PASSWORD: root_password   # Cambia esto por un password seguro
+      MYSQL_DATABASE: TeamUp          # Nombre de tu base de datos
+      MYSQL_USER: root                     # Usuario de la base de datos
+      MYSQL_PASSWORD: root_password          # Contraseña del usuario
     ports:
       - "3306:3306"                        # Mapea el puerto 3306
     volumes:
       - mysql_data:/var/lib/mysql          # Persistencia de datos
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin           # Imagen oficial de phpMyAdmin
+    container_name: phpmyadmin-container
+    restart: always
+    environment:
+      PMA_HOST: mysql                      # Nombre del servicio MySQL
+      PMA_USER: root                      # Usuario para acceder a la base de datos
+      PMA_PASSWORD: root_password        # Contraseña del usuario
+    ports:
+      - "8080:80"                          # Mapea el puerto 8080 del anfitrión al 80 del contenedor
 
 volumes:
   mysql_data:
